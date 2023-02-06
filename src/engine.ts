@@ -19,12 +19,10 @@ export class Value {
     let other = typeof _other === "number" ? new Value(_other) : _other;
     let out = new Value(this.data + other.data, new Set([this, other]), "+");
 
-    function _backward() {
+    out._backward = () => {
       this.grad += out.grad;
       other.grad += out.grad;
-    }
-
-    out._backward = _backward;
+    };
 
     return out;
   }
@@ -34,12 +32,10 @@ export class Value {
     let other = typeof _other === "number" ? new Value(_other) : _other;
     let out = new Value(this.data * other.data, new Set([this, other]), "*");
 
-    function _backward() {
+    out._backward = () => {
       this.grad += other.data * out.grad;
       other.grad += this.data * out.grad;
-    }
-
-    out._backward = _backward;
+    };
 
     return out;
   }
@@ -47,11 +43,9 @@ export class Value {
   pow(other: number) {
     let out = new Value(Math.pow(this.data, other), new Set([this]), `**${other}`);
 
-    function _backward() {
+    out._backward = () => {
       this.grad += (other * Math.pow(this.data, other-1)) * out.grad;
-    }
-
-    out._backward = _backward;
+    };
 
     return out;
   }
@@ -59,11 +53,9 @@ export class Value {
   relu() {
     let out = new Value(this.data < 0 ? 0 : this.data, new Set([this]), "ReLU");
 
-    function _backward() {
-      this.grad += (out.data < 0 ? 0 : 1) * out.grad; // Derivative of ReLU at zero is 1
-    }
-
-    out._backward = _backward;
+    out._backward = () => {
+      this.grad += (out.data <= 0 ? 0 : 1) * out.grad; // Derivative of ReLU at zero is 0
+    };
 
     return out;
   }
