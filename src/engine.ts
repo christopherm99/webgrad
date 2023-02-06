@@ -6,7 +6,11 @@ export class Value {
   private _prev: Set<Value>;
   private _op: string;
 
-  constructor(data:number, _children:Set<Value> = new Set(), _op:string='') {
+  constructor(
+    data: number,
+    _children: Set<Value> = new Set(),
+    _op: string = ""
+  ) {
     this.data = data;
     this.grad = 0;
     // Internal variables
@@ -27,7 +31,6 @@ export class Value {
     return out;
   }
 
-
   mul(_other: number | Value) {
     let other = typeof _other === "number" ? new Value(_other) : _other;
     let out = new Value(this.data * other.data, new Set([this, other]), "*");
@@ -41,10 +44,14 @@ export class Value {
   }
 
   pow(other: number) {
-    let out = new Value(Math.pow(this.data, other), new Set([this]), `**${other}`);
+    let out = new Value(
+      Math.pow(this.data, other),
+      new Set([this]),
+      `**${other}`
+    );
 
     out._backward = () => {
-      this.grad += (other * Math.pow(this.data, other-1)) * out.grad;
+      this.grad += other * Math.pow(this.data, other - 1) * out.grad;
     };
 
     return out;
@@ -61,27 +68,31 @@ export class Value {
   }
 
   backward() {
-    let topo: Array<Value> = []
+    let topo: Array<Value> = [];
     let visited: Set<Value> = new Set();
     function build_topo(v: Value) {
       if (!visited.has(v)) {
         visited.add(v);
         v._prev.forEach(build_topo);
-        topo.push(v)
+        topo.push(v);
       }
     }
     build_topo(this);
 
-    this.grad = 1
-    topo.reverse().forEach(v => v._backward());
+    this.grad = 1;
+    topo.reverse().forEach((v) => v._backward());
   }
 
   sub(other: number | Value) {
-    return this.add((typeof other === "number" ? new Value(other) : other).mul(-1));
+    return this.add(
+      (typeof other === "number" ? new Value(other) : other).mul(-1)
+    );
   }
 
   div(other: number | Value) {
-    return this.mul((typeof other === "number" ? new Value(other) : other).pow(-1));
+    return this.mul(
+      (typeof other === "number" ? new Value(other) : other).pow(-1)
+    );
   }
 
   toString() {

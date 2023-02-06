@@ -4,7 +4,7 @@ const config: Options = {
   entry: ["src/index.ts"],
   dts: true,
   sourcemap: true,
-  format: ["iife", "cjs", "esm"]
-}
+  format: ["iife", "cjs", "esm"],
+};
 
 export default config;
