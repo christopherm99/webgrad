@@ -1,3 +1,5 @@
+import { v4 as uuidV4 } from "uuid";
+
 export class Value {
   public data: number;
   public grad: number;
@@ -5,6 +7,7 @@ export class Value {
   private _backward: () => void;
   private _prev: Set<Value>;
   private _op: string;
+  private _id: string;
 
   constructor(
     data: number,
@@ -17,6 +20,7 @@ export class Value {
     this._backward = () => {};
     this._prev = _children;
     this._op = _op;
+    this._id = uuidV4()
   }
 
   add(_other: number | Value) {
@@ -101,5 +105,9 @@ export class Value {
 
   getChildren(): Set<Value> {
     return this._prev;
+  }
+
+  getID(): string {
+    return this._id;
   }
 }
