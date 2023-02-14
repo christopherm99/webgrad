@@ -98,4 +98,8 @@ export class Value {
   toString() {
     return `Value(data=${this.data}, grad=${this.grad})`;
   }
+
+  getChildren(): Set<Value> {
+    return this._prev;
+  }
 }

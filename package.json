@@ -8,7 +8,8 @@
     "build": "tsup src/index.ts",
     "start": "npm run build -- --watch",
     "test": "jest --silent",
-    "lint": "prettier --write ."
+    "lint": "prettier --write .",
+    "preversion": "npm run build"
   },
   "author": "Christopher Milan <chris.m.milan@gmail.com>",
   "license": "MIT",
