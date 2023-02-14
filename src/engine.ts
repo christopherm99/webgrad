@@ -110,4 +110,8 @@ export class Value {
   getID(): string {
     return this._id;
   }
+
+  getOp(): string {
+    return this._op;
+  }
 }
