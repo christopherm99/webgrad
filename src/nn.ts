@@ -46,7 +46,7 @@ class Layer extends Module {
 
   constructor(nin: number, nout: number, ...kwargs) {
     super();
-    this.neurons = Array(nin).fill(0).map(() => new Neuron(nin, ...kwargs));
+    this.neurons = Array(nout).fill(0).map(() => new Neuron(nin, ...kwargs));
   }
 
   apply(x) {
