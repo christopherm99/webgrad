@@ -19,7 +19,7 @@ class Neuron extends Module {
 
   constructor(nin: number, nonlin: boolean = true) {
     super();
-    this.w = Array(nin).map(() => new Value(randomUniform(-1, 1)));
+    this.w = Array(nin).fill(0).map(() => new Value(randomUniform(-1, 1)));
     this.b = new Value(0);
     this.nonlin = nonlin;
   }
@@ -46,7 +46,7 @@ class Layer extends Module {
 
   constructor(nin: number, nout: number, ...kwargs) {
     super();
-    this.neurons = Array(nin).map(() => new Neuron(nin, ...kwargs));
+    this.neurons = Array(nin).fill(0).map(() => new Neuron(nin, ...kwargs));
   }
 
   apply(x) {
